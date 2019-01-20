@@ -14,8 +14,8 @@
 using namespace std;
 
 using UID_64 = uniform_int_distribution<uint64_t>;
-using walao = decltype(bind(UID_64(), mt19937_64()));
-walao *randomizer;
+using rng_t = decltype(bind(UID_64(), mt19937_64())); // RNG type
+rng_t *randomizer;
 
 constexpr double PI = 3.14159265358979323846;
 
@@ -42,7 +42,7 @@ void approx() {
 	uint64_t a, b;
 	double ans, error, avg_error;
 
-	walao &myrand = *randomizer;
+	rng_t &myrand = *randomizer;
 	printf("\r");
 
 	do {
@@ -82,7 +82,7 @@ int main() {
 
 	UID_64 dice_distribution(1, max);
 	mt19937_64 random_number_engine(time(0)); // pseudorandom number generator
-	randomizer = reinterpret_cast<walao*>(&bind(dice_distribution, random_number_engine));
+	randomizer = reinterpret_cast<rng_t*>(&bind(dice_distribution, random_number_engine));
 
 	thread *th = new thread[thread_count];
 
